@@ -3,4 +3,5 @@
 ## Список заданий
 
 1. Задание ["Начало работы с GIT"](https://github.com/PUTENCHIK/starting_with_git);
-2. Задание ["Собрать проект на Composer"](assemble_composer_project/readme.md).
+2. Задание ["Собрать проект на Composer"](assemble_composer_project/readme.md);
+3. Задание ["Laravel: Начало"](laravel_begin/readme.md)
