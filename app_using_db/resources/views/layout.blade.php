@@ -13,13 +13,14 @@
         @show
     </head>
     <body>
-        <h2>Header</h2>
-        <br>
+        @section('header')
+            @include('shared.header')
+        @show
 
-        <div class="content">
+        <main>
             <div class="__content">
                 @yield('content')
             </div>
-        </div>
+        </main>
     </body>
 </html>
