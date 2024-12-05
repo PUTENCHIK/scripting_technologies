@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: 'Segoe UI';
-    font-size: 16px;
+    font-size: 18px;
     background-color: #1e1d40;
     color: white;
 }
@@ -28,6 +28,7 @@ header nav {
 }
 
 header a {
+    font-size: 18px;
     text-decoration: none;
     color: white;
 }
@@ -35,4 +36,24 @@ header a {
 main > .__content {
     width: 1240px;
     margin: auto;
+}
+
+button[type="submit"] {
+    height: 40px;
+    padding: 0 30px;
+
+    font-size: 18px;
+    border-radius: 10px;
+    border: 0;
+    outline: 2px solid white;
+    background-color: transparent;
+}
+
+button[type="submit"]:hover {
+    outline: 1px solid #cbcbcb;
+    color: #cbcbcb;
+}
+
+button:hover {
+    cursor: pointer;
 }

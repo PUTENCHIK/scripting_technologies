@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 use App\Models\Director;
 use App\Models\Film;
@@ -18,7 +19,6 @@ class FilmController extends Controller
         $films = Film::all();
         // $films->load('directors');
 
-        // dd($films);
         return view('films.index', compact('films'));
     }
 
@@ -30,7 +30,7 @@ class FilmController extends Controller
         $film = new Film;
         $directors = Director::pluck('full_name', 'id');
 
-        return view('films.create', compact('film', 'directors'));
+        return view('films.create', ['directors' => $directors]);
     }
 
     /**
@@ -38,7 +38,17 @@ class FilmController extends Controller
      */
     public function store(Request $request)
     {
-        Film::create($request->all());
+        $request->validate([
+            'name' => 'required',
+            'director_id' => 'required',
+            'year' => 'required'
+        ]);
+        Film::create([
+            'name' => $request['name'],
+            'slug' => Str::slug($request['name'], '-'),
+            'director_id' => $request['director_id'],
+            'year' => $request['year'],
+        ]);
 
         return redirect()->route('films.index');
     }

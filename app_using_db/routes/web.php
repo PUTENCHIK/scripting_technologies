@@ -28,3 +28,19 @@ Route::prefix('/films')->group(function () {
         ->name('films.show');
 
 });
+
+Route::prefix('/directors')->group(function () {
+
+    Route::get('', [\App\Http\Controllers\DirectorController::class, 'index'])
+        ->name('directors');
+
+    Route::get('/create', [\App\Http\Controllers\DirectorController::class, 'create'])
+        ->name('directors.create');
+
+    Route::post('/store', [\App\Http\Controllers\DirectorController::class, 'store'])
+        ->name('directors.store');
+
+    Route::get('/show', [\App\Http\Controllers\DirectorController::class, 'show'])
+        ->name('directors.show');
+
+});

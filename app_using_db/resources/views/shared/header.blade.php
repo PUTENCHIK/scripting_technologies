@@ -5,7 +5,7 @@
         </a>
         <nav>
             <a href={{ route('films') }}>Фильмы</a>
-            {{-- <a href={{ route('directors') }}></a> --}}
+            <a href={{ route('directors') }}>Режиссёры</a>
         </nav>
     </div>
 </header>
