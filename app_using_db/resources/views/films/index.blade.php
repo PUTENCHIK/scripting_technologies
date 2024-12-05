@@ -10,16 +10,16 @@
     </form>
 
     @if ($films->count())
-        <p>Список фильмов:</p>
-        <ul>
+        <h2>Список фильмов</h2>
+        <ol>
             @foreach ($films as $film)
                 <li>
-                    <a href={{ route('films.show', ['film' => $film->id]) }}>
-                        {{ $film->name }}
+                    <a href={{ route('films.show', $film->slug) }}>
+                        "{{ $film->name }}"
                     </a>
-                </li>    
+                </li>
             @endforeach
-        </ul>
+        </ol>
     @else
         <h3>Нет фильмов в базе</h3>
     @endif

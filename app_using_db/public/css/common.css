@@ -1,8 +1,15 @@
 body {
     margin: 0;
+    background-color: #1e1d40;
+}
+
+body,
+button,
+input,
+select,
+option {
     font-family: 'Segoe UI';
     font-size: 18px;
-    background-color: #1e1d40;
     color: white;
 }
 
@@ -27,10 +34,13 @@ header nav {
     column-gap: 20px;
 }
 
-header a {
-    font-size: 18px;
+a {
     text-decoration: none;
     color: white;
+}
+
+a:hover {
+    color: rgb(231, 231, 231);
 }
 
 main > .__content {
@@ -38,22 +48,44 @@ main > .__content {
     margin: auto;
 }
 
-button[type="submit"] {
+button,
+input,
+select {
     height: 40px;
-    padding: 0 30px;
-
-    font-size: 18px;
     border-radius: 10px;
     border: 0;
+}
+
+button[type="submit"] {
+    padding: 0 30px;
+
     outline: 2px solid white;
     background-color: transparent;
 }
 
 button[type="submit"]:hover {
-    outline: 1px solid #cbcbcb;
+    outline: 2px solid #cbcbcb;
     color: #cbcbcb;
+}
+
+button[type="submit"].danger {
+    background-color: rgb(255, 74, 74);
+    outline: 0;
+}
+
+button[type="submit"].danger:hover {
+    color: white;
+    background-color: rgb(255, 104, 104);
 }
 
 button:hover {
     cursor: pointer;
+}
+
+input,
+select {
+    padding-left: 15px;
+
+    outline: 0;
+    background-color: #020211;
 }

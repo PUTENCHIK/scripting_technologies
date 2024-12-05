@@ -13,6 +13,8 @@ class Film extends Model
 
     protected $fillable = [
         'name',
+        'slug',
+        'director_id',
         'year'
     ];
 

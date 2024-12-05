@@ -11,86 +11,72 @@ use App\Http\Requests\FilmRequest;
 
 class FilmController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $films = Film::all();
-        // $films->load('directors');
 
-        return view('films.index', compact('films'));
+        return view('films.index', ['films' => $films]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        $film = new Film;
-        $directors = Director::pluck('full_name', 'id');
+        $empty = new Film;
+        $directors = Director::all();
 
-        return view('films.create', ['directors' => $directors]);
+        return view('films.create', [
+            'directors' => $directors,
+            'empty' => $empty
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(FilmRequest $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'director_id' => 'required',
-            'year' => 'required'
-        ]);
         Film::create([
             'name' => $request['name'],
-            'slug' => Str::slug($request['name'], '-'),
-            'director_id' => $request['director_id'],
+            'slug' => Str::slug(Str::transliterate($request['name']), '-') . '-' . $request['year'],
+            'director_id' => (int)$request['director_id'],
             'year' => $request['year'],
         ]);
 
-        return redirect()->route('films.index');
+        return redirect()->route('films');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(string $slug)
     {
-        $film = Film::findOrFail($id);
+        $film = Film::where('slug', $slug)->firstOrFail();
+        $director = Director::where('id', $film->director_id)->first();
 
-        return view('films.show', compact('id'));
+        return view('films.show', [
+            'film' => $film,
+            'director' => $director
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(string $slug)
     {
-        $film = new Film;
-        return view('films.edit', compact('film'));
+        $film = Film::where('slug', $slug)->firstOrFail();
+        $directors = Director::all();
+
+        return view('films.edit', [
+            'film' => $film,
+            'directors' => $directors
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(FilmRequest $request, string $slug)
     {
-        $film = Film::findOrFail($id);
-        $film->update($request->all());
+        Film::where('slug', $slug)->firstOrFail()
+            ->update($request->all());
 
-        return redirect()->route('films.index');
+        return redirect()->route('films.show', $slug);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function delete(string $slug)
     {
-        $film = Film::findOrFail($id);
-        $film->delete();
+        Film::where('slug', $slug)->firstOrFail()
+            ->delete();
 
-        return redirect()->route('films.index');
+        return redirect()->route('films');
     }
 }

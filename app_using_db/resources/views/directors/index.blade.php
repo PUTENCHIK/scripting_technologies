@@ -10,16 +10,16 @@
     </form>
 
     @if ($directors->count())
-        <p>Список режиссёров:</p>
-        <ul>
+        <h2>Список режиссёров</h2>
+        <ol>
             @foreach ($directors as $director)
                 <li>
-                    <a href={{ route('directors.show', ['director' => $director->id]) }}>
-                        {{ $director->name }}
+                    <a href={{ route('directors.show', $director->slug) }}>
+                        {{ $director->full_name }}
                     </a>
-                </li>    
+                </li>
             @endforeach
-        </ul>
+        </ol>
     @else
         <h3>Нет режиссёров в базе</h3>
     @endif

@@ -24,8 +24,17 @@ Route::prefix('/films')->group(function () {
     Route::post('/store', [\App\Http\Controllers\FilmController::class, 'store'])
         ->name('films.store');
 
-    Route::get('/show', [\App\Http\Controllers\FilmController::class, 'show'])
+    Route::get('/{slug}', [\App\Http\Controllers\FilmController::class, 'show'])
         ->name('films.show');
+
+    Route::get('/{slug}/edit', [\App\Http\Controllers\FilmController::class, 'edit'])
+        ->name('films.edit');
+
+    Route::patch('/{slug}', [\App\Http\Controllers\FilmController::class, 'update'])
+        ->name('films.update');
+
+    Route::delete('/{slug}', [\App\Http\Controllers\FilmController::class, 'delete'])
+        ->name('films.delete');
 
 });
 
@@ -40,7 +49,16 @@ Route::prefix('/directors')->group(function () {
     Route::post('/store', [\App\Http\Controllers\DirectorController::class, 'store'])
         ->name('directors.store');
 
-    Route::get('/show', [\App\Http\Controllers\DirectorController::class, 'show'])
+    Route::get('/{slug}', [\App\Http\Controllers\DirectorController::class, 'show'])
         ->name('directors.show');
+
+    Route::get('/{slug}/edit', [\App\Http\Controllers\DirectorController::class, 'edit'])
+        ->name('directors.edit');
+
+    Route::patch('/{slug}', [\App\Http\Controllers\DirectorController::class, 'update'])
+        ->name('directors.update');
+
+    Route::delete('/{slug}', [\App\Http\Controllers\DirectorController::class, 'delete'])
+        ->name('directors.delete');
 
 });

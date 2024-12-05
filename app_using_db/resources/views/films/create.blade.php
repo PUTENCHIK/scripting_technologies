@@ -9,6 +9,7 @@
 @section('content')
 
     <h1>Добавление нового фильма</h1>
-    @include('films.form')
-    
+
+    @include('films.form', ['film' => $empty, 'directors' => $directors])
+
 @endsection

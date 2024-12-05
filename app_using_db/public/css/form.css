@@ -6,5 +6,14 @@ form {
 
 form label {
     display: flex;
+    row-gap: 10px;
     flex-direction: column;
+}
+
+.error {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: rgb(255, 74, 74);
+    color: white;
 }

@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Director;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
+use App\Http\Requests\DirectorRequest;
+use App\Models\Director;
+use App\Models\Film;
 
 class DirectorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $directors = Director::all();
@@ -17,51 +19,56 @@ class DirectorController extends Controller
         return view('directors.index', ['directors' => $directors]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $empty = new Director;
+        return view('directors.create', ['empty' => $empty]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+
+    public function store(DirectorRequest $request)
     {
-        //
+        Director::create([
+            'full_name' => $request['full_name'],
+            'slug' => Str::slug(Str::transliterate($request['full_name']), '-')
+        ]);
+
+        return redirect()->route('directors');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+
+    public function show(string $slug)
     {
-        //
+        $director = Director::where('slug', $slug)->firstOrFail();
+        $films = Film::where('director_id', $director->id)->get();
+
+        return view('directors.show', [
+            'director' => $director,
+            'films' => $films
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(string $slug)
     {
-        //
+        $director = Director::where('slug', $slug)->firstOrFail();
+
+        return view('directors.edit', ['director' => $director]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+
+    public function update(DirectorRequest $request, string $slug)
     {
-        //
+        Director::where('slug', $slug)->firstOrFail()
+            ->update($request->all());
+
+        return redirect()->route('directors.show', $slug);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function delete(string $slug)
     {
-        //
+        Director::where('slug', $slug)->firstOrFail()
+            ->delete();
+
+        return redirect()->route('directors');
     }
 }
