@@ -34,7 +34,9 @@ class FilmController extends Controller
     {
         Film::create([
             'name' => $request['name'],
-            'slug' => Str::slug(Str::transliterate($request['name']), '-') . '-' . $request['year'],
+            'slug' => Str::slug(Str::transliterate($request['name']), '-') .
+                '-' . $request['year'] .
+                '-' . Str::random(6),
             'director_id' => (int)$request['director_id'],
             'year' => $request['year'],
         ]);
@@ -44,18 +46,17 @@ class FilmController extends Controller
 
     public function show(string $slug)
     {
-        $film = Film::where('slug', $slug)->firstOrFail();
-        $director = Director::where('id', $film->director_id)->first();
+        $film = Film::bySlug($slug)->firstOrFail();
 
         return view('films.show', [
             'film' => $film,
-            'director' => $director
+            'director' => $film->director()->get()
         ]);
     }
 
     public function edit(string $slug)
     {
-        $film = Film::where('slug', $slug)->firstOrFail();
+        $film = Film::bySlug($slug)->firstOrFail();
         $directors = Director::all();
 
         return view('films.edit', [
@@ -66,7 +67,7 @@ class FilmController extends Controller
 
     public function update(FilmRequest $request, string $slug)
     {
-        Film::where('slug', $slug)->firstOrFail()
+        Film::bySlug($slug)->firstOrFail()
             ->update($request->all());
 
         return redirect()->route('films.show', $slug);
@@ -74,7 +75,7 @@ class FilmController extends Controller
 
     public function delete(string $slug)
     {
-        Film::where('slug', $slug)->firstOrFail()
+        Film::bySlug($slug)->firstOrFail()
             ->delete();
 
         return redirect()->route('films');

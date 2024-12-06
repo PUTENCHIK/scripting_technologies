@@ -13,8 +13,8 @@
     <p>
         Режиссёр:
         <b>
-            @if ($director)
-                <a href="{{ route('directors.show', $director->slug) }}">{{ $director->full_name }}</a>
+            @if (isset($director[0]))
+                <a href="{{ route('directors.show', $director[0]->slug) }}">{{ $director[0]->full_name }}</a>
             @else
                 -
             @endif

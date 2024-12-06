@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 use App\Http\Requests\DirectorRequest;
+use App\Http\Resources\DirectorCollection;
+use App\Http\Resources\DirectorResource;
 use App\Models\Director;
 use App\Models\Film;
 
@@ -19,6 +21,11 @@ class DirectorController extends Controller
         return view('directors.index', ['directors' => $directors]);
     }
 
+    public function all()
+    {
+        return new DirectorCollection(Director::all());
+    }
+
     public function create()
     {
         $empty = new Director;
@@ -30,7 +37,8 @@ class DirectorController extends Controller
     {
         Director::create([
             'full_name' => $request['full_name'],
-            'slug' => Str::slug(Str::transliterate($request['full_name']), '-')
+            'slug' => Str::slug(Str::transliterate($request['full_name']), '-') .
+                '-' . Str::random(6)
         ]);
 
         return redirect()->route('directors');
@@ -39,18 +47,22 @@ class DirectorController extends Controller
 
     public function show(string $slug)
     {
-        $director = Director::where('slug', $slug)->firstOrFail();
-        $films = Film::where('director_id', $director->id)->get();
+        $director = Director::bySlug($slug)->firstOrFail();
 
         return view('directors.show', [
             'director' => $director,
-            'films' => $films
+            'films' => $director->films()->get()
         ]);
+    }
+
+    public function data(string $slug)
+    {
+        return new DirectorResource(Director::bySlug($slug));
     }
 
     public function edit(string $slug)
     {
-        $director = Director::where('slug', $slug)->firstOrFail();
+        $director = Director::bySlug($slug)->firstOrFail();
 
         return view('directors.edit', ['director' => $director]);
     }
@@ -58,7 +70,7 @@ class DirectorController extends Controller
 
     public function update(DirectorRequest $request, string $slug)
     {
-        Director::where('slug', $slug)->firstOrFail()
+        Director::bySlug($slug)->firstOrFail()
             ->update($request->all());
 
         return redirect()->route('directors.show', $slug);
@@ -66,7 +78,7 @@ class DirectorController extends Controller
 
     public function delete(string $slug)
     {
-        Director::where('slug', $slug)->firstOrFail()
+        Director::bySlug($slug)->firstOrFail()
             ->delete();
 
         return redirect()->route('directors');

@@ -7,12 +7,6 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
-// Очень специфичный способ
-// Route::resource('films', \App\Http\Controllers\FilmController::class)
-//     // ->only(['index', 'show'])
-//     // ->except(['...'])
-//     ;
-
 Route::prefix('/films')->group(function () {
 
     Route::get('', [\App\Http\Controllers\FilmController::class, 'index'])
@@ -43,6 +37,8 @@ Route::prefix('/directors')->group(function () {
     Route::get('', [\App\Http\Controllers\DirectorController::class, 'index'])
         ->name('directors');
 
+    // Route::get('/data', [\App\Http\Controllers\DirectorController::class, 'all']);
+
     Route::get('/create', [\App\Http\Controllers\DirectorController::class, 'create'])
         ->name('directors.create');
 
@@ -51,6 +47,8 @@ Route::prefix('/directors')->group(function () {
 
     Route::get('/{slug}', [\App\Http\Controllers\DirectorController::class, 'show'])
         ->name('directors.show');
+
+    // Route::get('/{slug}/data', [\App\Http\Controllers\DirectorController::class, 'data']);
 
     Route::get('/{slug}/edit', [\App\Http\Controllers\DirectorController::class, 'edit'])
         ->name('directors.edit');

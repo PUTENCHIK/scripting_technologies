@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
 
 class Film extends Model
 {
@@ -18,7 +19,13 @@ class Film extends Model
         'year'
     ];
 
-    public function director() {
+    public function director()
+    {
         return $this->belongsTo(Director::class);
+    }
+
+    public function scopeBySlug(Builder $query, string $slug): void
+    {
+        $query->where('slug', $slug);
     }
 }
