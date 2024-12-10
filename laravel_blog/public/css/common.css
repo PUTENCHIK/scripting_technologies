@@ -1,0 +1,76 @@
+@import url('header.css');
+
+html,
+body {
+    margin: 0;
+}
+
+body,
+a,
+button {
+    font-family:'Courier New', Courier, monospace;
+    font-size: 18pt;
+    color: white;
+}
+
+body {
+    background-color: rgb(100, 40, 212);
+}
+
+h1 {
+    font-size: 24pt;
+}
+
+button:focus {
+    outline: 1px solid rgb(128, 128, 128);
+}
+
+a.no-link,
+a.no-link:active {
+    text-decoration: none;
+    transition-duration: 0.3s;
+}
+
+a.no-link:hover {
+    color: rgb(209, 209, 209);
+}
+
+button {
+    min-width: 150px;
+    height: 40px;
+    padding: 0 30px;
+
+    display: block;
+
+    border: 0;
+    outline: 0;
+    border-radius: 10px;
+    transition-duration: 0.3s;
+    background-color: rgb(32, 11, 151);
+    font-size: 14pt;
+}
+
+button:hover {
+    background-color: rgb(27, 8, 131);
+    cursor: pointer;
+}
+
+main {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+}
+
+main > .__content {
+    width: 1240px;
+    box-sizing: border-box;
+    padding: 80px 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.hidden {
+    display: none;
+}

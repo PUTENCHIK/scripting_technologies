@@ -1,0 +1,22 @@
+.auth-type {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    column-gap: 40px;
+}
+
+.auth-type > .line {
+    width: 2px;
+    height: 100%;
+
+    display: block;
+
+    background-color: white;
+}
+
+.auth-type > label:hover {
+    color: rgb(209, 209, 209);
+    cursor: pointer;
+}
+
