@@ -10,7 +10,7 @@
                 <a href="route('users')" class='no-link'>Пользователи</a>
             </div>
 
-            <form action="{{ route('auth') }}" method="GET">
+            <form action="{{ route('signin_page') }}" method="GET">
                 <button type="submit">Авторизация</button>
             </form>
         </nav>

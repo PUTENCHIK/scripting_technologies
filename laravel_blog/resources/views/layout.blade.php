@@ -7,6 +7,7 @@
         <title>@section('title') Layout @show</title>
         @stack('styles')
             <link rel="stylesheet" href="{{ asset('css/common.css') }}">
+            <link rel="stylesheet" href="{{ asset('css/forms.css') }}">
         @show
 
     </head>
@@ -21,5 +22,8 @@
             </div>
         </main>
 
+        @stack('scripts')
+
+        @show
     </body>
 </html>

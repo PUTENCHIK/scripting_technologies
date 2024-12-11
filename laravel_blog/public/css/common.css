@@ -7,7 +7,8 @@ body {
 
 body,
 a,
-button {
+button,
+input {
     font-family:'Courier New', Courier, monospace;
     font-size: 18pt;
     color: white;
@@ -21,10 +22,6 @@ h1 {
     font-size: 24pt;
 }
 
-button:focus {
-    outline: 1px solid rgb(128, 128, 128);
-}
-
 a.no-link,
 a.no-link:active {
     text-decoration: none;
@@ -33,26 +30,6 @@ a.no-link:active {
 
 a.no-link:hover {
     color: rgb(209, 209, 209);
-}
-
-button {
-    min-width: 150px;
-    height: 40px;
-    padding: 0 30px;
-
-    display: block;
-
-    border: 0;
-    outline: 0;
-    border-radius: 10px;
-    transition-duration: 0.3s;
-    background-color: rgb(32, 11, 151);
-    font-size: 14pt;
-}
-
-button:hover {
-    background-color: rgb(27, 8, 131);
-    cursor: pointer;
 }
 
 main {
@@ -69,6 +46,7 @@ main > .__content {
 
     display: flex;
     flex-direction: column;
+    row-gap: 40px;
 }
 
 .hidden {

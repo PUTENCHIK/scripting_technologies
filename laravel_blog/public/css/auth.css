@@ -15,8 +15,36 @@
     background-color: white;
 }
 
-.auth-type > label:hover {
+.auth-type > .variant {
+    padding: 10px 0;
+}
+
+.auth-type > .variant.chosen {
+    border-bottom: 2px solid white;
+}
+
+.auth-type > .variant a:hover {
     color: rgb(209, 209, 209);
     cursor: pointer;
 }
 
+.form-container {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+}
+
+.form-container > form {
+    width: 500px;
+
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    row-gap: 30px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+}
