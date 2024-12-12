@@ -8,7 +8,8 @@ body {
 body,
 a,
 button,
-input {
+input,
+textarea {
     font-family:'Courier New', Courier, monospace;
     font-size: 18pt;
     color: white;
@@ -46,7 +47,7 @@ main > .__content {
 
     display: flex;
     flex-direction: column;
-    row-gap: 40px;
+    row-gap: 20px;
 }
 
 .hidden {

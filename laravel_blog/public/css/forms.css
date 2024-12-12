@@ -18,8 +18,19 @@ button:hover {
     cursor: pointer;
 }
 
-button:focus {
+button:focus,
+textarea:focus {
     outline: 1px solid rgb(128, 128, 128);
+}
+
+button.secondary {
+    background-color: transparent;
+    border: 2px solid white;
+}
+
+button.secondary:hover {
+    border-color: rgb(187, 187, 187);
+    color: rgb(187, 187, 187);
 }
 
 label {
@@ -48,4 +59,13 @@ input:hover {
 
 input:focus {
     outline: 1px solid black;
+}
+
+textarea {
+    padding-inline: 10px;
+
+    color: black;
+    border-radius: 10px;
+    border: 0;
+    outline: 0;
 }

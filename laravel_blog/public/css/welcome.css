@@ -1,0 +1,42 @@
+.create-post-container {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.button-box {
+    width: 100%;
+    display: flex;
+    justify-content: right;
+}
+
+form[name="create-post"] {
+    width: calc(100% - 80px);
+    padding: 30px 40px;
+
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+
+    background-color: rgba(36, 9, 87, 0.7);
+    border-radius: 20px;
+}
+
+form[name="create-post"] textarea[name="text"] {
+    min-width: calc(100% - 20px);
+    max-width: calc(100% - 20px);
+    min-height: 50px;
+    height: 160px;
+    max-height: 240px;
+}
+
+.form-buttons-block {
+    display: flex;
+    column-gap: 20px;
+}
+
+.form-buttons-block > button {
+    flex-grow: 1;
+}
