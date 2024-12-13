@@ -33,6 +33,17 @@ button.secondary:hover {
     color: rgb(187, 187, 187);
 }
 
+button.no-shell {
+    min-width: 0;
+    padding: 0;
+    display: flex;
+
+    outline: 0;
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+}
+
 label {
     display: flex;
     flex-direction: column;

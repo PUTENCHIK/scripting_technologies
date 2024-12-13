@@ -11,8 +11,10 @@ class PostController extends Controller
     public function all()
     {
         $posts = Post::all([
+            'id',
             'text',
-            'path'
+            'path',
+            'created_at'
         ]);
 
         return ['posts' => $posts];

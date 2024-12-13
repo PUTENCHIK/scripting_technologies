@@ -40,3 +40,74 @@ form[name="create-post"] textarea[name="text"] {
 .form-buttons-block > button {
     flex-grow: 1;
 }
+
+.posts-box {
+    width: 100%;
+    padding-bottom: 80px;
+
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+}
+
+.post-box {
+    width: 100%;
+    padding: 30px;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+
+    background-color: rgba(36, 9, 87, 0.7);
+    border-radius: 20px;
+}
+
+.post__header {
+    display: flex;
+    align-items: center;
+    column-gap: 30px;
+}
+
+.post__info {
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+
+    color: rgb(224, 224, 224);
+    font-style: italic;
+    font-size: 16pt;
+}
+
+.post__buttons {
+    display: flex;
+    column-gap: 5px;
+}
+
+.post__buttons > form {
+    padding: 5px;
+    display: flex;
+
+    border-radius: 10px;
+    transition-duration: 0.3s;
+    cursor: pointer;
+}
+
+.post__buttons form:hover {
+    background-color: white;
+}
+
+.post__buttons img {
+    width: 32px;
+}
+
+.post__image {
+    display: flex;
+    justify-content: center;
+}
+
+.post__image > img {
+    max-width: 500px;
+    max-height: 500px;
+}

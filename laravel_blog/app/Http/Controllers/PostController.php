@@ -16,9 +16,15 @@ class PostController extends Controller
 
     public function store(PostRequest $request)
     {
-
         $post = Post::create($request->only('text', 'path'));
 
         return ['post' => $post];
+    }
+
+    public function delete(Request $request, string $id)
+    {
+        Post::findOrFail($id)->delete();
+
+        return ['id' => $id];
     }
 }

@@ -12,11 +12,10 @@
 
     <div class="posts-container">
         <div class="button-box">
-            {{-- <button @click="count++">@{{ count }}</button> --}}
             <button @click="showForm = true" v-if="!showForm">Создать пост</button>
         </div>
 
-        <form @submit="(event) => onSubmit(event)" v-if="showForm" name="create-post">
+        <form @submit="(event) => createPost(event)" v-if="showForm" name="create-post">
             @csrf
 
             <label>
@@ -38,14 +37,38 @@
 
         <h2>Посты</h2>
 
-        <div v-if="posts.length" class="posts-box">
+        <div v-if="!loading && posts.length" class="posts-box">
             <div v-for="post in posts" class="post-box">
-                @{{ post.text }}
-                <br>
-                @{{ post.path }}
+
+                <div class="post__header">
+                    <div class="post__info">
+                        <span>#@{{ post.id }}</span>
+                        <span>@{{ formatDate(post.created_at) }}</span>
+                    </div>
+                    <div class="post__buttons">
+                        <form>
+                            @csrf
+                            <button type="submit" class="no-shell">
+                                <img src="{{ asset('images/edit.png') }}" alt="edit">
+                            </button>
+                        </form>
+                        <form @submit="(event) => deletePost(event, post.id)" method="POST">
+                            @method('delete')
+                            @csrf
+                            <button type="submit" class="no-shell">
+                                <img src="{{ asset('images/delete.png') }}" alt="delete">
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="post__text">@{{ post.text }}</div>
+                <div class="post__image" v-if="post.path">
+                    <img :src="post.path" v-bind:alt="'unkown: ' + post.path">
+                </div>
             </div>
         </div>
-        <div v-else>В блоге нет ни одного поста.</div>
+        <div v-else-if="!loading">В блоге нет ни одного поста.</div>
+        <div v-else>Загрузка постов...</div>
     </div>
 
 @endsection

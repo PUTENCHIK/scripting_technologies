@@ -21,6 +21,9 @@ Route::prefix('/posts')->group(function() {
     Route::post('/create', [\App\Http\Controllers\PostController::class, 'store'])
         ->name('posts.store');
 
+    Route::delete('/{id}/delete', [\App\Http\Controllers\PostController::class, 'delete'])
+        ->name('posts.delete');
+
 });
 
 Route::prefix('/auth')->group(function () {
