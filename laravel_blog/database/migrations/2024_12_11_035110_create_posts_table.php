@@ -10,7 +10,8 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->foreign('user_id')->references('id')->on('users');
+            $table->text('text');
+            $table->string('path')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

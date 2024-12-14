@@ -6,8 +6,7 @@
         </a>
         <nav>
             <div>
-                <a href="route('themes')" class='no-link'>Темы</a>
-                <a href="route('users')" class='no-link'>Пользователи</a>
+                <a href="{{ route('moderate.index') }}" class='no-link'>Модерация</a>
             </div>
 
             <form action="{{ route('signin_page') }}" method="GET">

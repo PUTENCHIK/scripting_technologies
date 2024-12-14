@@ -11,6 +11,21 @@ class Comment extends Model
     use HasFactory;
     use SoftDeletes;
 
+    static public $statuses = [
+        'moderating' => [
+            'value' => 10,
+            'name' => 'на модерации',
+        ],
+        'published' => [
+            'value' => 20,
+            'name' => 'опубликован',
+        ],
+        'canceled' => [
+            'value' => 30,
+            'name' => 'заблокирован',
+        ]
+    ];
+
     protected $fillable = [
         'text',
         'user',

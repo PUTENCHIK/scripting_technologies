@@ -12,7 +12,11 @@ Route::prefix('')->group(function() {
 
 Route::prefix('/api')->group(function() {
 
-    Route::get('/posts', [\App\Http\Controllers\Api\PostController::class, 'all']);
+    Route::get('/posts', [\App\Http\Controllers\ApiController::class, 'posts']);
+
+    Route::get('/comments', [\App\Http\Controllers\ApiController::class, 'comments']);
+
+    Route::get('/statuses', [\App\Http\Controllers\ApiController::class, 'statuses']);
 
 });
 
@@ -23,6 +27,13 @@ Route::prefix('/posts')->group(function() {
 
     Route::delete('/{id}/delete', [\App\Http\Controllers\PostController::class, 'delete'])
         ->name('posts.delete');
+
+});
+
+Route::prefix('/moderate')->group(function() {
+
+    Route::get('', [\App\Http\Controllers\ModerateController::class, 'index'])
+        ->name('moderate.index');
 
 });
 

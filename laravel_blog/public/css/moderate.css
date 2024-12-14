@@ -1,0 +1,66 @@
+.app-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 40px;
+}
+
+.section-selector {
+    width: 100%;
+
+    display: flex;
+    justify-content: left;
+    column-gap: 40px;
+}
+
+.section-selector > .line {
+    width: 2px;
+    height: 100%;
+
+    display: block;
+
+    background-color: white;
+}
+
+.section-selector > .variant {
+    padding: 10px 0;
+}
+
+.section-selector > .variant.chosen {
+    border-bottom: 2px solid white;
+}
+
+.section-selector > .variant:hover {
+    color: rgb(209, 209, 209);
+    cursor: pointer;
+}
+
+.comments-container {
+    display: flex;
+    flex-direction: column;
+    /* row-gap: 20px; */
+}
+
+.comments-table {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 30px;
+
+    display: table;
+    border-collapse: separate;
+    border-spacing: 20px;
+
+    background-color: rgba(36, 9, 87, 0.7);
+    border-radius: 20px;
+}
+
+.comment {
+    display: table-row;
+}
+
+.comment.head {
+    font-weight: 600;
+}
+
+.comment > div {
+    display: table-cell;
+}

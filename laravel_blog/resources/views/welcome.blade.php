@@ -39,7 +39,6 @@
 
         <div v-if="!loading && posts.length" class="posts-box">
             <div v-for="post in posts" class="post-box">
-
                 <div class="post__header">
                     <div class="post__info">
                         <span>#@{{ post.id }}</span>
@@ -65,6 +64,7 @@
                 <div class="post__image" v-if="post.path">
                     <img :src="post.path" v-bind:alt="'unkown: ' + post.path">
                 </div>
+                
             </div>
         </div>
         <div v-else-if="!loading">В блоге нет ни одного поста.</div>

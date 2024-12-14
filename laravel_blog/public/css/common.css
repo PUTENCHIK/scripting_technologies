@@ -9,7 +9,9 @@ body,
 a,
 button,
 input,
-textarea {
+textarea,
+select,
+option {
     font-family:'Courier New', Courier, monospace;
     font-size: 18pt;
     color: white;
