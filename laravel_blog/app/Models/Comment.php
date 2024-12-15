@@ -27,9 +27,10 @@ class Comment extends Model
     ];
 
     protected $fillable = [
-        'text',
+        'post_id',
         'user',
-        'status_id'
+        'text',
+        'status'
     ];
 
     public function post()

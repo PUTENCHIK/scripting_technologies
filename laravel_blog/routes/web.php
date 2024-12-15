@@ -22,11 +22,21 @@ Route::prefix('/api')->group(function() {
 
 Route::prefix('/posts')->group(function() {
 
-    Route::post('/create', [\App\Http\Controllers\PostController::class, 'store'])
+    Route::post('/store', [\App\Http\Controllers\PostController::class, 'store'])
         ->name('posts.store');
 
     Route::delete('/{id}/delete', [\App\Http\Controllers\PostController::class, 'delete'])
         ->name('posts.delete');
+
+});
+
+Route::prefix('/comments')->group(function() {
+
+    Route::post('/store', [\App\Http\Controllers\CommentController::class, 'store'])
+        ->name('comments.store');
+
+    Route::patch('/{id}/update', [\App\Http\Controllers\CommentController::class, 'update'])
+        ->name('comments.update');
 
 });
 

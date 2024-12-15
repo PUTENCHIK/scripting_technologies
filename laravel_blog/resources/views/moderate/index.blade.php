@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-    
+
     <h1>Модерация комментариев</h1>
 
     <div class="app-container">
@@ -29,10 +29,10 @@
                     <div>@{{ comment.user }}</div>
                     <div>@{{ comment.text }}</div>
                     <div>
-                        <form @submit="(event) => changeCommentStatus(event, comment.id)" method="POST">
+                        <form @submit="(event) => changeCommentStatus(event, comment.id)" ref="commentForms" method="POST">
                             @csrf
                             @method('patch')
-                            <select @change="$event.target.parentElement.submit()" name="status" :disabled="sending">
+                            <select @change="(event) => onChangeStatus(event, comment.id)" name="status" :disabled="sending">
                                 <option
                                     v-for="(status, key) in statuses"
                                     :value="status.value"
@@ -63,5 +63,5 @@
 
 @push('scripts')
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="{{ asset('js/moderate.js') }}"></script>    
+    <script src="{{ asset('js/moderate.js') }}"></script>
 @endpush

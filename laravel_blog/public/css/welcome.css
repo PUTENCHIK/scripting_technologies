@@ -25,6 +25,7 @@ form[name="create-post"] {
 }
 
 form[name="create-post"] textarea[name="text"] {
+    resize: vertical;
     min-width: calc(100% - 20px);
     max-width: calc(100% - 20px);
     min-height: 50px;
@@ -57,7 +58,7 @@ form[name="create-post"] textarea[name="text"] {
 
     display: flex;
     flex-direction: column;
-    row-gap: 20px;
+    row-gap: 30px;
 
     background-color: rgba(36, 9, 87, 0.7);
     border-radius: 20px;
@@ -110,4 +111,69 @@ form[name="create-post"] textarea[name="text"] {
 .post__image > img {
     max-width: 500px;
     max-height: 500px;
+}
+
+.comments-box {
+    margin-top: 20px;
+    padding-top: 20px;
+
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+
+    border-top: 1px solid white;
+}
+
+.add-comment-container {
+    width: 100%;
+    font-size: 14pt;
+}
+
+.add-comment-container > form {
+    display: flex;
+    column-gap: 20px;
+}
+
+.add-comment-container label.fill-container {
+    width: 100%;
+}
+
+.add-comment-container form textarea {
+    box-sizing: border-box;
+    resize: vertical;
+    min-width: 100%;
+    min-height: 40px;
+    height: 40px;
+    max-height: 120px;
+}
+
+.add-comment-container .button-container {
+    padding-top: 35px;
+}
+
+.comments {
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+}
+
+.comment {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.comment__header {
+    display: flex;
+    column-gap: 15px;
+
+    color: rgb(224, 224, 224);
+    font-style: italic;
+    font-size: 14pt;
+    white-space: nowrap;
+}
+
+.comment__header > .datetime-container {
+    width: 100%;
+    text-align: right;
 }

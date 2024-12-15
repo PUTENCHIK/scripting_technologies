@@ -1,4 +1,4 @@
-const { createApp } = Vue
+const { createApp, ref } = Vue
 
 createApp({
     data() {
@@ -7,7 +7,7 @@ createApp({
             statuses: [],
             isCommentsSection: true,
             loading: false,
-            sending: false,
+            sending: false
         }
     },
 
@@ -33,7 +33,7 @@ createApp({
                     this.comments = r.comments;
                 })
                 .catch(error => {
-                    console.log("Error: ", error);                    
+                    console.log("Error: ", error);
                 });
             this.loading = false;
         },
@@ -51,7 +51,7 @@ createApp({
                     this.statuses = r.statuses;
                 })
                 .catch(error => {
-                    console.log("Error: ", error);                    
+                    console.log("Error: ", error);
                 });
             this.loading = false;
         },
@@ -78,17 +78,18 @@ createApp({
             return `${hours}:${minutes}, ${day}.${month}.${date.getFullYear()}`;
         },
 
-        onChangeStatus(event) {
-            event.target.parentElement.submit();
+        onChangeStatus(event, comment_id) {
+            console.log(event, comment_id);
+
         },
 
         changeCommentStatus(event, comment_id) {
             console.log(comment_id);
             // event.preventDefault();
-            
+
             // let data = new FormData(event.target);
             // let requestBody = JSON.stringify(Object.fromEntries(data));
-            // console.log(requestBody);                        
+            // console.log(requestBody);
         }
     },
 

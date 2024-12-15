@@ -29,6 +29,11 @@ h2 {
     font-size: 24pt;
 }
 
+h3 {
+    font-size: 20pt;
+    margin: 0;
+}
+
 a.no-link,
 a.no-link:active {
     text-decoration: none;

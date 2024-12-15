@@ -21,7 +21,7 @@ createApp({
             let requestBody = JSON.stringify(Object.fromEntries(data));
 
             this.sending = true;
-            fetch('/posts/create', {
+            fetch('/posts/store', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -31,6 +31,7 @@ createApp({
                 .then(r => r.json())
                 .then((r) => {
                     this.posts.unshift(r['post']);
+
                     this.showForm = false;
                     this.sending = false;
                 })
@@ -88,6 +89,33 @@ createApp({
                         this.posts.splice(index, 1);
                     }
                 });
+        },
+
+        addComment(event, post_id) {
+            let data = new FormData(event.target);
+            data.append('post_id', post_id);
+            let requestBody = JSON.stringify(Object.fromEntries(data));
+
+            this.sending = true
+            fetch('/comments/store', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: requestBody
+            })
+                .then(r => r.json())
+                .then(r => {
+                    for (let i = 0; i < this.posts.length; i++) {
+                        let post = this.posts[i];
+                        if (post.id == r['comment'].post_id) {
+                            post.comments.push(r['comment']);
+                        }
+                    }
+                    event.target.reset();
+                    this.sending = false;
+                });
+            this.sending = false;
         }
     },
 

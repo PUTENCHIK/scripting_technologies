@@ -85,3 +85,7 @@ select {
     background-color: transparent;
     padding-right: 15px;
 }
+
+option {
+    color: black;
+}

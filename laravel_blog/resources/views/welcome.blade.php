@@ -10,6 +10,30 @@
 
     <h1>Название блога</h1>
 
+    {{-- <form action="{{ route('comments.store') }}" method="POST">
+        @csrf
+
+        <label>
+            <span>ID поста:</span>
+            <input type="number" name="post_id">
+        </label>
+
+        <label>
+            <span>Пользователь:</span>
+            <input type="text" name="user">
+        </label>
+
+        <label>
+            <span>Текст:</span>
+            <textarea name="text"></textarea>
+        </label>
+
+        <div class="form-buttons-block">
+            <button type="submit">Добавить</button>
+        </div>
+
+    </form> --}}
+
     <div class="posts-container">
         <div class="button-box">
             <button @click="showForm = true" v-if="!showForm">Создать пост</button>
@@ -64,7 +88,40 @@
                 <div class="post__image" v-if="post.path">
                     <img :src="post.path" v-bind:alt="'unkown: ' + post.path">
                 </div>
-                
+                <div class="comments-box">
+                    <h3>Комментарии</h3>
+                    <div v-if="post.comments.length" class="comments">
+                        <div v-for="comment in post.comments" class="comment">
+                            <div class="comment__header">
+                                <div>#@{{ comment.id }}</div>
+                                <div>@{{ comment.user }}</div>
+                                <div class="datetime-container">@{{ formatDate(comment.created_at) }}</div>
+                            </div>
+                            <div class="comment__body">
+                                @{{ comment.text }}
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else>
+                        Оставьте первый комментарий под этим постом!
+                    </div>
+                    <div class="add-comment-container">
+                        <form @submit.prevent="(event) => addComment(event, post.id)">
+                            @csrf
+                            <label>
+                                <span>Имя пользователя:</span>
+                                <input type="text" name="user">
+                            </label>
+                            <label class="fill-container">
+                                <span>Комментарий:</span>
+                                <textarea name="text"></textarea>
+                            </label>
+                            <div class="button-container">
+                                <button type="submit">Отправить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
         <div v-else-if="!loading">В блоге нет ни одного поста.</div>

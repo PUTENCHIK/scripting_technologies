@@ -17,6 +17,7 @@ class PostController extends Controller
     public function store(PostRequest $request)
     {
         $post = Post::create($request->only('text', 'path'));
+        $post->load('comments');
 
         return ['post' => $post];
     }
