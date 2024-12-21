@@ -98,7 +98,7 @@
                                 <div class="datetime-container">@{{ formatDate(comment.created_at) }}</div>
                             </div>
                             <div class="comment__body">
-                                @{{ comment.text }}
+                                @{{ comment.status == 20 ? comment.text : 'Комментарий на модерации' }}
                             </div>
                         </div>
                     </div>

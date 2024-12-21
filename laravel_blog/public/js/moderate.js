@@ -30,7 +30,7 @@ createApp({
             })
                 .then(r => r.json())
                 .then(r => {
-                    this.comments = r.comments;
+                    this.comments = r['comments'];
                 })
                 .catch(error => {
                     console.log("Error: ", error);
@@ -48,7 +48,7 @@ createApp({
             })
                 .then(r => r.json())
                 .then(r => {
-                    this.statuses = r.statuses;
+                    this.statuses = r['statuses'];
                 })
                 .catch(error => {
                     console.log("Error: ", error);
@@ -78,18 +78,41 @@ createApp({
             return `${hours}:${minutes}, ${day}.${month}.${date.getFullYear()}`;
         },
 
-        onChangeStatus(event, comment_id) {
-            console.log(event, comment_id);
-
+        onChangeStatus(event) {
+            let submit = event.target.parentNode.submit;
+            submit.click();
         },
 
         changeCommentStatus(event, comment_id) {
-            console.log(comment_id);
-            // event.preventDefault();
+            event.preventDefault();
+            this.sending = true;
+            let data = new FormData(event.target);
+            let requestBody = JSON.stringify(Object.fromEntries(data));            
+            
+            fetch(`/comments/${comment_id}/update`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: requestBody
+            })
+                .then(r => r.json())
+                .then(r => {
+                    if (r['success']) {
+                        for (let i = 0; i < this.comments.length; i++) {
+                            let comment = this.comments[i];
+                            if (comment.id == comment_id) {
+                                comment.status = Number(event.target.status.value);
+                                break;
+                            }
+                        }
+                    }                    
+                })
+                .catch(error => {
+                    console.log("Error: ", error);
+                });
 
-            // let data = new FormData(event.target);
-            // let requestBody = JSON.stringify(Object.fromEntries(data));
-            // console.log(requestBody);
+            this.sending = false;
         }
     },
 

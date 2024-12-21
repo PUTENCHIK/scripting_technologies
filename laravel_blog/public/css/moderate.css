@@ -34,13 +34,13 @@
     cursor: pointer;
 }
 
-.comments-container {
+.content-container {
     display: flex;
     flex-direction: column;
     /* row-gap: 20px; */
 }
 
-.comments-table {
+.content-table {
     width: 100%;
     box-sizing: border-box;
     padding: 30px;
@@ -53,14 +53,14 @@
     border-radius: 20px;
 }
 
-.comment {
+.line {
     display: table-row;
 }
 
-.comment.head {
+.line.head {
     font-weight: 600;
 }
 
-.comment > div {
+.line > div {
     display: table-cell;
 }

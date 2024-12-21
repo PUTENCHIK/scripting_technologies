@@ -13,9 +13,9 @@
     <div class="app-container">
         @include('moderate.section_selector')
 
-        <div v-if="isCommentsSection" class="comments-container">
-            <div v-if="!loading && comments.length" class="comments-table">
-                <div class="comment head">
+        <div class="content-container">
+            <div v-if="!loading && (isCommentsSection && comments.length || !isCommentsSection)" class="content-table">
+                <div v-if="isCommentsSection" class="line head">
                     <div></div>
                     <div>ID поста</div>
                     <div>Пользователь</div>
@@ -23,16 +23,25 @@
                     <div>Статус</div>
                     <div>Время и дата</div>
                 </div>
-                <div v-for="comment in comments" class="comment">
+                <div v-else class="line head">
+                    <div>Название</div>
+                    <div>Локализация</div>
+                    <div>Системное значение</div>
+                </div>
+
+                <div v-if="isCommentsSection" v-for="comment in comments" class="line">
                     <div>#@{{ comment.id }}</div>
                     <div>@{{ comment.post_id }}</div>
                     <div>@{{ comment.user }}</div>
                     <div>@{{ comment.text }}</div>
                     <div>
-                        <form @submit="(event) => changeCommentStatus(event, comment.id)" ref="commentForms" method="POST">
+                        <form
+                                @submit="(event) => changeCommentStatus(event, comment.id)"
+                                method="POST"
+                        >
                             @csrf
                             @method('patch')
-                            <select @change="(event) => onChangeStatus(event, comment.id)" name="status" :disabled="sending">
+                            <select @change="(event) => onChangeStatus(event)" name="status" :disabled="sending">
                                 <option
                                     v-for="(status, key) in statuses"
                                     :value="status.value"
@@ -41,21 +50,24 @@
                                     @{{ status.name }}
                                 </option>
                             </select>
+                            <input type="submit" name="submit" class="hidden">
                         </form>
                     </div>
                     <div>@{{ formatDate(comment.created_at) }}</div>
                 </div>
+                <div v-else v-for="(value, name) in statuses" class="line">
+                    <div>@{{ name }}</div>
+                    <div>@{{ value.name }}</div>
+                    <div>@{{ value.value }}</div>
+                </div>
             </div>
             <div v-else-if="!loading">
-                Нет комментариев
+                <span v-if="isCommentsSection">Нет комментариев</span>
+                <span v-else>Нет статусов комментариев</span>
             </div>
             <div v-else>
-                Комментарии загружаются...
+                Контент загружается...
             </div>
-        </div>
-
-        <div v-else>
-
         </div>
     </div>
 

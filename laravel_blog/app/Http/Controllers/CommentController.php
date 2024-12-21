@@ -19,10 +19,10 @@ class CommentController extends Controller
         return ['comment' => Comment::findOrFail($comment->id)];
     }
 
-    public function update(CommentRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
         $comment = Comment::findOrFail($id)->update($request->only('status'));
 
-        return ['comment' => $comment];
+        return ['success' => $comment];
     }
 }

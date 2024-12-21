@@ -17,8 +17,9 @@ class ApiController extends Controller
             'path',
             'created_at'
         ]);
-
-        $posts->load('comments');
+        $posts->load([
+            'comments' => fn ($query) => $query->where([['status', '<>', (string)(Comment::$statuses['canceled']['value'])]])
+        ]);
 
         return ['posts' => $posts];
     }
