@@ -33,6 +33,12 @@ class Comment extends Model
         'status'
     ];
 
+    // protected $hidden = [
+    //     'updated_at',
+    //     'deleted_at',
+    //     'post_id'
+    // ];
+
     public function post()
     {
         return $this->belongsTo(Post::class);
@@ -41,5 +47,13 @@ class Comment extends Model
     public function status()
     {
         return $this->belongsTo(CommentStatus::class);
+    }
+
+    public function scopePublished($query)
+    {
+        // $query->where('status', 20);
+        $query->where([
+            ['status', '<>', (string)(Comment::$statuses['canceled']['value'])]
+        ]);
     }
 }

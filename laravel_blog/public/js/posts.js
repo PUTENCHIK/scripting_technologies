@@ -7,6 +7,7 @@ createApp({
             showForm: false,
             sending: false,
             loading: false,
+            updatingPost: null
         }
     },
 
@@ -25,6 +26,7 @@ createApp({
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Accept": "application/json",
                 },
                 body: requestBody
             })

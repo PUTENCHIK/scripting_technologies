@@ -18,6 +18,11 @@ class Post extends Model
 
     public function comments()
     {
+        return $this->all_comments()->published();
+    }
+
+    public function all_comments()
+    {
         return $this->hasMany(Comment::class);
     }
 }
