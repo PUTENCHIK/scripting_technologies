@@ -22,6 +22,15 @@ class PostController extends Controller
         return ['post' => $post];
     }
 
+    public function update(PostRequest $request, string $id)
+    {
+        Post::findOrFail($id)->update($request->all());
+        $post = Post::findOrFail($id);
+        $post->load('comments');
+
+        return ['post' => $post];
+    }
+
     public function delete(Request $request, string $id)
     {
         Post::findOrFail($id)->delete();

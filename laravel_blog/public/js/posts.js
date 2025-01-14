@@ -7,7 +7,8 @@ createApp({
             showForm: false,
             sending: false,
             loading: false,
-            updatingPost: null
+            updatingPost: null,
+            errors: {}
         }
     },
 
@@ -32,16 +33,55 @@ createApp({
             })
                 .then(r => r.json())
                 .then((r) => {
-                    this.posts.unshift(r['post']);
-
-                    this.showForm = false;
-                    this.sending = false;
+                    if ('errors' in r) {
+                        this.errors = r['errors'];
+                    } else {
+                        this.posts.unshift(r['post']);
+                        this.showForm = false;
+                    }
                 })
                 .catch(error => {
                     console.log(error);
-
-                    this.sending = false;
                 });
+            this.sending = false;
+        },
+
+        updatePost(event, post_id) {
+            event.preventDefault();
+
+            let data = new FormData(event.target);
+            let requestBody = JSON.stringify(Object.fromEntries(data));
+
+            this.sending = true;
+            fetch(`/posts/${post_id}/update`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                },
+                body: requestBody
+            })
+                .then(r => r.json())
+                .then((r) => {
+                    if ('errors' in r) {
+                        this.errors = r['errors'];
+                    } else {
+                        this.updatingPost = null;
+
+                        let index;
+                        for (let i = 0; i < this.posts.length; i++) {
+                            if (this.posts[i].id == post_id) {
+                                index = i;
+                                break;
+                            }
+                        }
+
+                        if (index != null) {
+                            this.posts[index] = r['post'];
+                        }
+                    }
+                })
+            this.sending = false;
         },
 
         formatDate(dt) {
@@ -118,6 +158,12 @@ createApp({
                     this.sending = false;
                 });
             this.sending = false;
+        },
+
+        editUpdatingPost(post_id) {
+            this.updatingPost = post_id;
+            this.errors = {};
+            this.showForm = false;
         }
     },
 

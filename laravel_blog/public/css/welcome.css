@@ -24,15 +24,6 @@ form[name="create-post"] {
     border-radius: 20px;
 }
 
-form[name="create-post"] textarea[name="text"] {
-    resize: vertical;
-    min-width: calc(100% - 20px);
-    max-width: calc(100% - 20px);
-    min-height: 50px;
-    height: 160px;
-    max-height: 240px;
-}
-
 .form-buttons-block {
     display: flex;
     column-gap: 20px;
@@ -40,6 +31,21 @@ form[name="create-post"] textarea[name="text"] {
 
 .form-buttons-block > button {
     flex-grow: 1;
+}
+
+form[name="update-post"] {
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+}
+
+form textarea[name="text"] {
+    resize: vertical;
+    min-width: calc(100% - 20px);
+    max-width: calc(100% - 20px);
+    min-height: 50px;
+    height: 160px;
+    max-height: 240px;
 }
 
 .posts-box {

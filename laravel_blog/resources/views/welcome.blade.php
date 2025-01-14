@@ -36,7 +36,7 @@
 
     <div class="posts-container">
         <div class="button-box">
-            <button @click="showForm = true" v-if="!showForm">Создать пост</button>
+            <button @click="showForm = true; updatingPost = null" v-if="!showForm">Создать пост</button>
         </div>
 
         <form @submit="(event) => createPost(event)" v-if="showForm" name="create-post">
@@ -45,11 +45,13 @@
             <label>
                 <span>Текст поста:</span>
                 <textarea name="text"></textarea>
+                <div v-if="errors['text']" class="error">@{{ errors['text'][0] }}</div>
             </label>
 
             <label>
                 <span>URL изображения (необязательно):</span>
                 <input type="text" name="path" placeholder="https://your/image/path.jpg">
+                <div v-if="errors['path']" class="error">@{{ errors['path'][0] }}</div>
             </label>
 
             <div class="form-buttons-block">
@@ -69,9 +71,8 @@
                         <span>@{{ formatDate(post.created_at) }}</span>
                     </div>
                     <div class="post__buttons">
-                        <form>
-                            @csrf
-                            <button type="submit" class="no-shell">
+                        <form v-if="updatingPost !== post.id">
+                            <button @click="() => editUpdatingPost(post.id)" type="button" class="no-shell">
                                 <img src="{{ asset('images/edit.png') }}" alt="edit">
                             </button>
                         </form>
@@ -84,11 +85,37 @@
                         </form>
                     </div>
                 </div>
-                <div class="post__text">@{{ post.text }}</div>
-                <div class="post__image" v-if="post.path">
+
+                <div v-if="updatingPost !== post.id" class="post__text">@{{ post.text }}</div>
+                <div v-if="updatingPost !== post.id" class="post__image" v-if="post.path">
                     <img :src="post.path" v-bind:alt="'unkown: ' + post.path">
                 </div>
-                <div class="comments-box">
+                <div v-if="updatingPost === post.id">
+                    <form @submit="(event) => updatePost(event, post.id)" name="update-post">
+                        @method('patch')
+                        @csrf
+
+                        <label>
+                            <span>Текст поста:</span>
+                            <textarea name="text">@{{ post.text }}</textarea>
+                            <div v-if="errors['text']" class="error">@{{ errors['text'][0] }}</div>
+                        </label>
+
+                        <label>
+                            <span>URL изображения (необязательно):</span>
+                            <input type="text" name="path" placeholder="https://your/image/path.jpg" :value="post.path">
+                            <div v-if="errors['path']" class="error">@{{ errors['path'][0] }}</div>
+                        </label>
+
+                        <div class="form-buttons-block">
+                            <button @click="() => editUpdatingPost(null)" type="button" class="secondary">Закрыть</button>
+                            <button type="submit" :disabled="sending">Сохранить</button>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div v-if="updatingPost !== post.id" class="comments-box">
                     <h3>Комментарии</h3>
                     <div v-if="post.comments.length" class="comments">
                         <div v-for="comment in post.comments" class="comment">

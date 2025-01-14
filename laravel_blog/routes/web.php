@@ -25,6 +25,9 @@ Route::prefix('/posts')->group(function() {
     Route::post('/store', [\App\Http\Controllers\PostController::class, 'store'])
         ->name('posts.store');
 
+    Route::patch('/{id}/update', [\App\Http\Controllers\PostController::class, 'update'])
+        ->name('post.update');
+
     Route::delete('/{id}/delete', [\App\Http\Controllers\PostController::class, 'delete'])
         ->name('posts.delete');
 
