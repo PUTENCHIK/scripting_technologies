@@ -6,3 +6,4 @@
 2. Задание ["Собрать проект на Composer"](assemble_composer_project/);
 3. Задание ["Laravel: Начало"](laravel_begin/)
 4. Задание ["Laravel: Работа с данными"](app_using_db/)
+5. Задание ["Laravel: Приложение"](laravel_blog/)

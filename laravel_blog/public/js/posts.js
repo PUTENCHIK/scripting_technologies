@@ -8,7 +8,11 @@ createApp({
             sending: false,
             loading: false,
             updatingPost: null,
-            errors: {}
+            errors: {},
+            commentErrors: {
+                id: null,
+                errors: {}
+            }
         }
     },
 
@@ -143,19 +147,32 @@ createApp({
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Accept": "application/json",
                 },
                 body: requestBody
             })
                 .then(r => r.json())
                 .then(r => {
-                    for (let i = 0; i < this.posts.length; i++) {
-                        let post = this.posts[i];
-                        if (post.id == r['comment'].post_id) {
-                            post.comments.push(r['comment']);
+                    if ('errors' in r) {
+                        this.commentErrors = {
+                            id: post_id,
+                            errors: r['errors']
+                        };
+                        console.log(this.commentErrors);
+
+                    } else {
+                        for (let i = 0; i < this.posts.length; i++) {
+                            let post = this.posts[i];
+                            if (post.id == r['comment'].post_id) {
+                                post.comments.push(r['comment']);
+                            }
                         }
+                        event.target.reset();
+                        this.commentErrors = {
+                            id: null,
+                            errors: null,
+                        };
                     }
-                    event.target.reset();
-                    this.sending = false;
                 });
             this.sending = false;
         },

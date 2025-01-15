@@ -138,10 +138,16 @@
                             <label>
                                 <span>Имя пользователя:</span>
                                 <input type="text" name="user">
+                                <div v-if="commentErrors.id == post.id && commentErrors.errors['user']" class="error">
+                                    @{{ commentErrors.errors['user'][0] }}
+                                </div>
                             </label>
                             <label class="fill-container">
                                 <span>Комментарий:</span>
                                 <textarea name="text"></textarea>
+                                <div v-if="commentErrors.id == post.id && commentErrors.errors['text']" class="error">
+                                    @{{ commentErrors.errors['text'][0] }}
+                                </div>
                             </label>
                             <div class="button-container">
                                 <button type="submit">Отправить</button>
