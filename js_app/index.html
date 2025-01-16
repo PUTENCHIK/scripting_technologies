@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Ваши заметки</title>
+</head>
+<body>
+    <div id="main">
+        <main>
+            <div class="control-block">
+                <div class="control-panel">
+                    <div class="button-group">
+                        <button><span>+</span> заметка</button>
+                        <button><span>+</span> метка</button>
+                    </div>
+                    <div class="button-group">
+                        <button class="light-danger">Очистить заметки</button>
+                        <button class="light-danger">Очистить метки</button>
+                        <button class="danger">Очистить</button>
+                    </div>
+                </div>
+    
+                <div class="navigation">
+                    <div @click="activePage = 1" class="page" :class="{ 'active' : activePage === 1 }">Заметки</div>
+                    <div class="vline"></div>
+                    <div @click="activePage = 2" class="page" :class="{ 'active' : activePage === 2 }">Метки</div>
+                </div>
+            </div>
+
+            <div v-if="activePage === 1" class="tasks-list">
+                <div class="task-block">
+                    <div class="left-group">
+                        <div class="__id">#1</div>
+                        <div class="__description">
+                            <div class="__title">Уволить Дэнни</div>
+                            <div class="__text">
+                                Не забудь уволить этого негритёнка!
+                                Не забудь уволить этого негритёнка!
+                                Не забудь уволить этого негритёнка!
+                                Не забудь уволить этого негритёнка!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right-group">
+                        <div class="__labels">
+                            <div class="label">Важно</div>
+                            <div class="label">Второстепенно</div>
+                        </div>
+                        <div class="__buttons">
+                            <div class="image-button">
+                                <img src="images/edit.png" alt="edit">
+                            </div>
+                            <div class="image-button">
+                                <img src="images/delete.png" alt="delete">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div v-else class="labels-list">
+                <div class="label-block">
+                    <div class="left-group">
+                        <div class="__id">#1</div>
+                        <div class="__name">Важно</div>
+                        <div class="label-color"></div>
+                    </div>
+                    <div class="right-group">
+                        <div class="__buttons">
+                            <div class="image-button">
+                                <img src="images/edit.png" alt="edit">
+                            </div>
+                            <div class="image-button">
+                                <img src="images/delete.png" alt="delete">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
