@@ -16,9 +16,9 @@
                         <button @click="addLabelClicked" :disabled="showForm == 2"><span>+</span> метка</button>
                     </div>
                     <div class="button-group">
-                        <button class="light-danger">Очистить заметки</button>
-                        <button class="light-danger">Очистить метки</button>
-                        <button class="danger">Очистить</button>
+                        <button @click="clearNotes" class="light-danger">Очистить заметки</button>
+                        <button @click="clearLabels" class="light-danger">Очистить метки</button>
+                        <button @click="clearAll" class="danger">Очистить</button>
                     </div>
                 </div>
     
@@ -28,59 +28,60 @@
                     <div @click="activePage = 2" class="page" :class="{ 'active' : activePage === 2 }">Метки</div>
                 </div>
                 <div v-else class="form-container">
-                    <h2>Добавить {{ showForm === 1 ? 'заметку' : 'метку' }}</h2>
-                    <form v-on:reset="showTextColorPicker = false" @submit="formHandle">
+                    <h2>{{ formTitle }}</h2>
+                    <form v-on:reset="showTextColorPicker = false; formErrors = {}" @submit="formHandle">
                         <div v-if="showForm === 1" class="inputs-box">
                             <label>
                                 <span>Заголовок:</span>
-                                <input type="text" name="title" maxlength="30">
+                                <input type="text" name="title" maxlength="30" :value="formData.title || ''">
                                 <div v-if="'title' in formErrors" class="error">{{ formErrors.title }}</div>
                             </label>
                             <label>
                                 <span>Текст:</span>
-                                <textarea name="text"></textarea>
+                                <textarea name="text">{{ formData.text || '' }}</textarea>
                                 <div v-if="'text' in formErrors" class="error">{{ formErrors.text }}</div>
                             </label>
-                            <label>
+                            <label v-if="Object.keys(labels).length">
                                 <span>Метки:</span>
                                 <div class="adding-labels-box">
                                     <label v-for="label, label_id in labels" class="row">
-                                        <input type="checkbox" :name="label_id">
+                                        <input type="checkbox" :name="label_id" :checked="(formData.labels || []).includes(Number(label_id))">
                                         <div class="label" :style="{'background-color': label.bcolor, 'color': label.tcolor}">{{ label.name }}</div>
                                     </label>
                                     <div v-if="'labels' in formErrors" class="error">{{ formErrors.labels }}</div>
                                 </div>
                             </label>
+                            <div v-else>Нет меток</div>
                         </div>
                         <div v-else class="inputs-box">
                             <label>
                                 <span>Название:</span>
-                                <input type="text" name="name" maxlength="30">
+                                <input type="text" name="name" maxlength="30" :value="formData.name || ''">
                                 <div v-if="'name' in formErrors" class="error">{{ formErrors.name }}</div>
                             </label>
                             <label class="row">
                                 <span>Цвет метки:</span>
-                                <input type="color" name="bcolor">
+                                <input type="color" name="bcolor" :value="formData.bcolor || '#000000'">
                             </label>
 
                             <div class="tcolor-box">
                                 <span>Цвет текста:</span>
                                 <label class="row">
-                                    <input @change="showTextColorPicker = false" type="radio" name="tcolor" value="#000000">
+                                    <input @change="showTextColorPicker = false" type="radio" name="tcolor" value="#000000" :checked="(formData.tcolor || '') == '#000000'">
                                     <span>Чёрный</span>
                                 </label>
                                 <label class="row">
-                                    <input @change="showTextColorPicker = false" type="radio" name="tcolor" value="#ffffff" checked>
+                                    <input @change="showTextColorPicker = false" type="radio" name="tcolor" value="#ffffff" :checked="(formData.tcolor || '') == '#ffffff' || !formData.tcolor">
                                     <span>Белый</span>
                                 </label>
                                 <label class="row">
-                                    <input @change="showTextColorPicker = true" type="radio" name="tcolor" value="own">
+                                    <input @change="showTextColorPicker = true" type="radio" name="tcolor" value="own" :checked="!['#000000', '#ffffff'].includes(formData.tcolor || '')">
                                     <span>Выбрать</span>
                                 </label>
 
-                                <label v-if="showTextColorPicker" class="row">
+                                <label v-if="showTextColorPicker || !['#000000', '#ffffff'].includes(formData.tcolor || '')" class="row">
                                     <span>Цвет текста:</span>
-                                    <input type="color" name="tcolor_picker">
+                                    <input type="color" name="tcolor_picker" :value="formData.tcolor || '#ffffff'">
                                 </label>
                             </div>
                             <div v-if="'colors' in formErrors" class="error">{{ formErrors.colors }}</div>
@@ -88,7 +89,7 @@
                         <div class="buttons-box">
                             <button @click="showForm = null" type="button">Закрыть</button>
                             <button type="reset">Сбросить</button>
-                            <button type="submit" class="primary">Добавить</button>
+                            <button type="submit" class="primary">{{ submitButtonText }}</button>
                         </div>
                     </form>
                 </div>
@@ -110,15 +111,16 @@
                             </div>
                         </div>
                         <div class="__buttons">
-                            <div class="image-button">
+                            <div @click="editNoteClicked(note_id)" class="image-button">
                                 <img src="images/edit.png" alt="edit">
                             </div>
-                            <div class="image-button">
+                            <div @click="deleteNote(note_id)" class="image-button">
                                 <img src="images/delete.png" alt="delete">
                             </div>
                         </div>
                     </div>
                 </div>
+                <div v-if="!Object.keys(notes).length">Нет ни одной заметки</div>
             </div>
 
             <div v-else class="labels-list">
@@ -131,7 +133,7 @@
                         <div class="label-color" :style="{'background-color': label.bcolor}" v-bind:title="label.bcolor"></div>
                         <div class="label-color" :style="{'background-color': label.tcolor}" v-bind:title="label.tcolor"></div>
                         <div class="__buttons">
-                            <div class="image-button">
+                            <div @click="editLabelClicked(label_id)" class="image-button">
                                 <img src="images/edit.png" alt="edit">
                             </div>
                             <div @click="deleteLabel(label_id)" class="image-button">
@@ -140,6 +142,7 @@
                         </div>
                     </div>
                 </div>
+                <div v-if="!Object.keys(labels).length">Нет ни одной метки</div>
             </div>
         </main>
     </div>

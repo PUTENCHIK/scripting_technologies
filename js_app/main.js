@@ -6,9 +6,12 @@ createApp({
             activePage: 1,
             notes: {},
             labels: {},
-            showForm: 1,
+            showForm: null,
+            formTitle: '',
+            submitButtonText: '',
             showTextColorPicker: false,
             formErrors: {},
+            formData: {},
         }
     },
 
@@ -28,27 +31,56 @@ createApp({
             this.showForm = 1;
             this.activePage = 1;
             this.showTextColorPicker = false;
+            this.formTitle = 'Добавление заметки';
+            this.submitButtonText = 'Добавить';
+            this.formData = {};
         },
 
         addLabelClicked() {
             this.showForm = 2;
             this.activePage = 2;
             this.showTextColorPicker = false;
+            this.formTitle = 'Добавление метки';
+            this.submitButtonText = 'Добавить';
+            this.formData = {};
+        },
+
+        editNoteClicked(id) {
+            this.showForm = 1;
+            this.showTextColorPicker = false;
+            this.formTitle = `Изменение заметки #${id}`;
+            this.submitButtonText = 'Применить';
+            this.formData = this.notes[id];
+            this.formData['id'] = Number(id);
+        },
+
+        editLabelClicked(id) {
+            this.showForm = 2;
+            this.showTextColorPicker = false;
+            this.formTitle = `Изменение метки #${id}`;
+            this.submitButtonText = 'Применить';
+            this.formData = this.labels[id];
+            this.formData['id'] = Number(id);
         },
 
         formHandle(event) {
             if (this.showForm === 1) {
-                this.addNote(event);
+                if ('id' in this.formData) {
+                    this.editNote(event);
+                } else {
+                    this.addNote(event);
+                }
             } else {
-                this.addLabel(event);
+                if ('id' in this.formData) {
+                    this.editLabel(event);
+                } else {
+                    this.addLabel(event);
+                }
             }
         },
 
-        addNote(event) {
-            event.preventDefault();
+        validateNote(data) {
             this.formErrors = {};
-            let data = new FormData(event.target);
-
             if (!data.get('title').length) {
                 this.formErrors['title'] = 'Необходимо заполнить заголовок';
             }
@@ -70,6 +102,13 @@ createApp({
                     }
                 }
             }
+            return labels;
+        },
+
+        addNote(event) {
+            event.preventDefault();
+            let data = new FormData(event.target);
+            let labels = this.validateNote(data);
 
             if (Object.keys(this.formErrors).length === 0) {
                 MyLocalStorage.add_note(data.get('title'), data.get('text'), labels);
@@ -78,11 +117,21 @@ createApp({
             }
         },
 
-        addLabel(event) {
+        editNote(event) {
             event.preventDefault();
+            let data = new FormData(event.target);
+            let labels = this.validateNote(data);
+
+            if (Object.keys(this.formErrors).length === 0) {
+                MyLocalStorage.edit_note(this.formData.id, data.get('title'), data.get('text'), labels);
+                this.showForm = null;
+                this.updateData();
+            }
+        },
+
+        validateLabel(data) {
             this.formErrors = {};
 
-            let data = new FormData(event.target);
             let tcolor;
             if (data.get('tcolor') === 'own') {
                 tcolor = data.get('tcolor_picker');
@@ -95,7 +144,15 @@ createApp({
             }
             if (data.get('bcolor') === tcolor) {
                 this.formErrors['colors'] = 'Цвет фона и текста должны различаться';
-            }          
+            }
+
+            return tcolor;
+        },
+
+        addLabel(event) {
+            event.preventDefault();
+            let data = new FormData(event.target);
+            let tcolor = this.validateLabel(data);
 
             if (Object.keys(this.formErrors).length === 0) {
                 MyLocalStorage.add_label(data.get('name'), data.get('bcolor'), tcolor);
@@ -104,22 +161,48 @@ createApp({
             }
         },
 
+        editLabel(event) {
+            event.preventDefault();
+            let data = new FormData(event.target);
+            let tcolor = this.validateLabel(data);
+
+            if (Object.keys(this.formErrors).length === 0) {
+                MyLocalStorage.edit_label(this.formData.id, data.get('name'), data.get('bcolor'), tcolor);
+                this.showForm = null;
+                this.updateData();
+            }
+        },
+
+        deleteNote(id) {
+            MyLocalStorage.delete_note(id);
+            this.updateData();
+        },
+
         deleteLabel(id) {
             MyLocalStorage.delete_label(id);
             this.updateData();
         },
+
+        clearNotes() {
+            MyLocalStorage.clear_notes();
+            this.updateData();
+        },
+
+        clearLabels() {
+            MyLocalStorage.clear_labels();
+            this.updateData();
+        },
+
+        clearAll() {
+            MyLocalStorage.clear_all();
+            this.updateData();
+        }
     },
 
     mounted: function() {
         try {
             MyLocalStorage.create();
         } catch {}
-
-        // MyLocalStorage.add_label("Важно", "#ff0000", "#ffffff");
-        // MyLocalStorage.add_label("Не откладывать", "#00ff00", "#ffffff");
-        // MyLocalStorage.add_label("Мусор", "#cccccc", "#000000");
-        // MyLocalStorage.add_note("Уволить Дэнни", "Не откладывать, он опасен", [1, 2]);
-        // MyLocalStorage.add_note("Заработать свой миллион", "Пофиг", [3]);
 
         this.updateData();
     }

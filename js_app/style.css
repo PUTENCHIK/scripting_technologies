@@ -234,6 +234,8 @@ button > span {
 
 .navigation > .page.active {
     text-decoration: underline;
+    color: white;
+    cursor: inherit;
 }
 
 .navigation > .vline {

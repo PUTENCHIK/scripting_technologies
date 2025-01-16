@@ -47,6 +47,16 @@ class MyLocalStorage {
         this.set(storage);
     }
 
+    static edit_note(id, title, text, labels) {
+        let storage = this.get();
+
+        storage.notes[id].title = title;
+        storage.notes[id].text = text;
+        storage.notes[id].labels = labels;
+
+        this.set(storage);
+    }
+
     static add_label(name, bcolor, tcolor) {
         let storage = this.get();
         storage.data.max_label_id++;
@@ -62,6 +72,16 @@ class MyLocalStorage {
         this.set(storage);
     }
 
+    static edit_label(id, name, bcolor, tcolor) {
+        let storage = this.get();
+
+        storage.labels[id].name = name;
+        storage.labels[id].bcolor = bcolor;
+        storage.labels[id].tcolor = tcolor;
+
+        this.set(storage);
+    }
+
     static get_note(id) {
         let storage = this.get();
         return storage.notes[id];
@@ -72,14 +92,58 @@ class MyLocalStorage {
         return storage.labels[id];
     }
 
+    static delete_note(id) {
+        let storage = this.get();
+        for (let note_id in storage.notes) {            
+            if (note_id == id) {
+                delete storage.notes[id];
+                break;
+            }
+        }
+        this.set(storage);
+    }
+
     static delete_label(id) {
         let storage = this.get();
         for (let label_id in storage.labels) {            
             if (label_id == id) {
                 delete storage.labels[id];
+                console.log('deleted label', id);
+                
                 break;
             }
         }
+        for (let note_id in storage.notes) {            
+            if (storage.notes[note_id].labels.includes(Number(id))) {
+                console.log('deleted label', id, 'from note', note_id);
+                
+                storage.notes[note_id].labels.shift(Number(id));
+            }
+        }
         this.set(storage);
+    }
+
+    static clear_notes() {
+        let storage = this.get();
+        storage.data.max_note_id = 0;
+        storage.notes = {};
+        this.set(storage);
+    }
+
+    static clear_labels() {
+        let storage = this.get();
+        storage.data.max_label_id = 0;
+        storage.labels = {};
+
+        for (let note_id in storage.notes) {            
+            storage.notes[note_id].labels = [];
+        }
+
+        this.set(storage);
+    }
+
+    static clear_all() {
+        this.clear_notes();
+        this.clear_labels();
     }
 }
