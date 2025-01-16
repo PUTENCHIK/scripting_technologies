@@ -4,14 +4,80 @@ input,
 textarea,
 select {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14pt;
 }
 
 body {
     margin: 0;
     padding: 40px 0;
-
-    font-size: 14pt;
     /* background-color: rgb(215, 255, 255); */
+}
+
+h2 {
+    margin: 0;
+}
+
+input[type="text"],
+textarea,
+select {
+    color: rgb(60, 60, 60);
+    outline: 1px solid rgb(60, 60, 60);
+    border: 0;
+}
+
+input[type="text"]:hover,
+input[type="text"]:focus,
+textarea:hover,
+textarea:focus,
+select:hover,
+select:focus {
+    color: black;
+    outline: 1px solid black;
+}
+
+input[type="text"] {
+    height: 40px;
+    padding: 0 15px;
+    box-sizing: border-box;
+
+    border-radius: 20px;
+    background-color: white;
+}
+
+input[type="color"] {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+
+    border: 0;
+    outline: 0;
+    background: none;
+}
+
+textarea {
+    padding: 5px;
+    box-sizing: border-box;
+
+    border-radius: 5px;
+}
+
+select {
+    padding: 5px;
+
+    border-radius: 5px;
+    background-color: white;
+}
+
+label {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+label.row {
+    flex-direction: row;
+    align-items: center;
+    column-gap: 10px;
 }
 
 #main {
@@ -37,6 +103,7 @@ main {
 
     display: flex;
     flex-direction: column;
+    align-items: center;
     row-gap: 40px;
 }
 
@@ -76,12 +143,18 @@ button {
     background-color: white;
     border: 1px solid black;
     outline: 0;
+    cursor: pointer;
 }
 
 button:hover {
-    cursor: pointer;
     border: 1px solid rgb(128, 128, 128);
     color: rgb(128, 128, 128);
+}
+
+button:disabled {
+    border: 1px solid #1010104d;
+    color: #1010104d;
+    cursor: auto;
 }
 
 button.primary {
@@ -170,14 +243,14 @@ button > span {
     background-color: white;
 }
 
-.tasks-list,
+.notes-list,
 .labels-list {
     display: flex;
     flex-direction: column;
     row-gap: 20px;
 }
 
-.task-block,
+.note-block,
 .label-block {
     width: 100%;
     padding: 10px;
@@ -191,7 +264,7 @@ button > span {
     box-shadow: 0px 0px 10px rgb(224, 224, 224);
 }
 
-.task-block > .left-group, 
+.note-block > .left-group, 
 .label-block > .left-group {
     /* flex-grow: 1; */
     width: 50%;
@@ -202,11 +275,12 @@ button > span {
     align-items: center;
 }
 
-.task-block > .right-group,
+.note-block > .right-group,
 .label-block > .right-group {
     display: inline-flex;
     column-gap: 20px;
     justify-content: right;
+    align-items: center;
 }
 
 .__id {
@@ -217,20 +291,20 @@ button > span {
     font-size: 22pt;
 }
 
-.task-block .__description {
+.note-block .__description {
     width: 100%;
     display: flex;
     flex-direction: column;
     row-gap: 7px;
 }
 
-.task-block .__description > .__title,
+.note-block .__description > .__title,
 .label-block .__name {
     font-size: 18pt;
     font-weight: 500;
 }
 
-.task-block .__description > .__text {
+.note-block .__description > .__text {
     font-style: italic;
     font-size: 13pt;
 
@@ -289,4 +363,73 @@ button > span {
 .image-button > img {
     width: 32px;
     height: 32px;
+}
+
+.form-container {
+    max-width: min-content;
+    padding: 20px;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 20px;
+
+    border-radius: 20px;
+    background-color: white;
+    box-shadow: 0px 0px 10px rgb(224, 224, 224);
+}
+
+.form-container form {
+    max-width: min-content;
+
+    display: inline-flex;
+    flex-direction: column;
+    row-gap: 20px;
+}
+
+.form-container form .inputs-box {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    justify-content: center;
+}
+
+textarea[name="text"] {
+    resize: vertical;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 60px;
+    max-height: 200px;
+}
+
+.form-container form .buttons-box {
+    display: flex;
+    column-gap: 20px;
+    justify-content: center;
+}
+
+.form-container form .tcolor-box {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+form .error {
+    padding: 5px 10px;
+    box-sizing: border-box;
+
+    border-radius: 5px;
+    background-color: red;
+    color: white;
+    font-size: 10pt;
+}
+
+.form-container form .adding-labels-box {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 10px;
+    row-gap: 10px;
 }

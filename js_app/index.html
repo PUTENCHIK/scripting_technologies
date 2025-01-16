@@ -12,8 +12,8 @@
             <div class="control-block">
                 <div class="control-panel">
                     <div class="button-group">
-                        <button><span>+</span> заметка</button>
-                        <button><span>+</span> метка</button>
+                        <button @click="addNoteClicked" :disabled="showForm == 1"><span>+</span> заметка</button>
+                        <button @click="addLabelClicked" :disabled="showForm == 2"><span>+</span> метка</button>
                     </div>
                     <div class="button-group">
                         <button class="light-danger">Очистить заметки</button>
@@ -22,31 +22,92 @@
                     </div>
                 </div>
     
-                <div class="navigation">
+                <div v-if="showForm === null" class="navigation">
                     <div @click="activePage = 1" class="page" :class="{ 'active' : activePage === 1 }">Заметки</div>
                     <div class="vline"></div>
                     <div @click="activePage = 2" class="page" :class="{ 'active' : activePage === 2 }">Метки</div>
                 </div>
+                <div v-else class="form-container">
+                    <h2>Добавить {{ showForm === 1 ? 'заметку' : 'метку' }}</h2>
+                    <form v-on:reset="showTextColorPicker = false" @submit="formHandle">
+                        <div v-if="showForm === 1" class="inputs-box">
+                            <label>
+                                <span>Заголовок:</span>
+                                <input type="text" name="title" maxlength="30">
+                                <div v-if="'title' in formErrors" class="error">{{ formErrors.title }}</div>
+                            </label>
+                            <label>
+                                <span>Текст:</span>
+                                <textarea name="text"></textarea>
+                                <div v-if="'text' in formErrors" class="error">{{ formErrors.text }}</div>
+                            </label>
+                            <label>
+                                <span>Метки:</span>
+                                <div class="adding-labels-box">
+                                    <label v-for="label, label_id in labels" class="row">
+                                        <input type="checkbox" :name="label_id">
+                                        <div class="label" :style="{'background-color': label.bcolor, 'color': label.tcolor}">{{ label.name }}</div>
+                                    </label>
+                                    <div v-if="'labels' in formErrors" class="error">{{ formErrors.labels }}</div>
+                                </div>
+                            </label>
+                        </div>
+                        <div v-else class="inputs-box">
+                            <label>
+                                <span>Название:</span>
+                                <input type="text" name="name" maxlength="30">
+                                <div v-if="'name' in formErrors" class="error">{{ formErrors.name }}</div>
+                            </label>
+                            <label class="row">
+                                <span>Цвет метки:</span>
+                                <input type="color" name="bcolor">
+                            </label>
+
+                            <div class="tcolor-box">
+                                <span>Цвет текста:</span>
+                                <label class="row">
+                                    <input @change="showTextColorPicker = false" type="radio" name="tcolor" value="#000000">
+                                    <span>Чёрный</span>
+                                </label>
+                                <label class="row">
+                                    <input @change="showTextColorPicker = false" type="radio" name="tcolor" value="#ffffff" checked>
+                                    <span>Белый</span>
+                                </label>
+                                <label class="row">
+                                    <input @change="showTextColorPicker = true" type="radio" name="tcolor" value="own">
+                                    <span>Выбрать</span>
+                                </label>
+
+                                <label v-if="showTextColorPicker" class="row">
+                                    <span>Цвет текста:</span>
+                                    <input type="color" name="tcolor_picker">
+                                </label>
+                            </div>
+                            <div v-if="'colors' in formErrors" class="error">{{ formErrors.colors }}</div>
+                        </div>
+                        <div class="buttons-box">
+                            <button @click="showForm = null" type="button">Закрыть</button>
+                            <button type="reset">Сбросить</button>
+                            <button type="submit" class="primary">Добавить</button>
+                        </div>
+                    </form>
+                </div>
             </div>
 
-            <div v-if="activePage === 1" class="tasks-list">
-                <div class="task-block">
+            <div v-if="activePage === 1" class="notes-list">
+                <div v-for="note, note_id in notes" class="note-block">
                     <div class="left-group">
-                        <div class="__id">#1</div>
+                        <div class="__id">#{{ note_id }}</div>
                         <div class="__description">
-                            <div class="__title">Уволить Дэнни</div>
-                            <div class="__text">
-                                Не забудь уволить этого негритёнка!
-                                Не забудь уволить этого негритёнка!
-                                Не забудь уволить этого негритёнка!
-                                Не забудь уволить этого негритёнка!
-                            </div>
+                            <div class="__title">{{ note.title }}</div>
+                            <div class="__text">{{ note.text }}</div>
                         </div>
                     </div>
                     <div class="right-group">
                         <div class="__labels">
-                            <div class="label">Важно</div>
-                            <div class="label">Второстепенно</div>
+                            <div v-for="label_id in note.labels" class="label-box">
+                                <div class="label" :style="{'background-color': getLabel(label_id).bcolor, 'color': getLabel(label_id).tcolor}">{{ getLabel(label_id).name }}</div>
+                            </div>
                         </div>
                         <div class="__buttons">
                             <div class="image-button">
@@ -61,18 +122,19 @@
             </div>
 
             <div v-else class="labels-list">
-                <div class="label-block">
+                <div v-for="label, label_id in labels" class="label-block">
                     <div class="left-group">
-                        <div class="__id">#1</div>
-                        <div class="__name">Важно</div>
-                        <div class="label-color"></div>
+                        <div class="__id">#{{ label_id }}</div>
+                        <div class="__name">{{ label.name }}</div>
                     </div>
                     <div class="right-group">
+                        <div class="label-color" :style="{'background-color': label.bcolor}" v-bind:title="label.bcolor"></div>
+                        <div class="label-color" :style="{'background-color': label.tcolor}" v-bind:title="label.tcolor"></div>
                         <div class="__buttons">
                             <div class="image-button">
                                 <img src="images/edit.png" alt="edit">
                             </div>
-                            <div class="image-button">
+                            <div @click="deleteLabel(label_id)" class="image-button">
                                 <img src="images/delete.png" alt="delete">
                             </div>
                         </div>
@@ -83,6 +145,7 @@
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="storage.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
